@@ -29,13 +29,14 @@ MscoreDMR contains C code, so a C compiler and zlib are required (Linux: gcc
 and zlib headers; macOS: Xcode Command Line Tools, `xcode-select --install`).
 
 ```r
-install.packages("BiocManager")
+install.packages(c("BiocManager", "remotes"))
+# Bioconductor dependencies (remotes installs the CRAN ones automatically)
 BiocManager::install(c("GenomicRanges", "IRanges", "S4Vectors", "Rsamtools"))
-install.packages(c("data.table", "locfit", "matrixStats"))
-
-# From a source checkout or a built tarball
-install.packages("path/to/MscoreDMR", repos = NULL, type = "source")
+remotes::install_github("JiantaoShi/MscoreDMR")
 ```
+
+To install from a local source checkout instead:
+`install.packages("path/to/MscoreDMR", repos = NULL, type = "source")`.
 
 Tested with R 4.4 (Linux, gcc) and R 4.5 (macOS arm64, clang).
 
