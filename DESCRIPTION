@@ -1,0 +1,40 @@
+Package: MscoreDMR
+Type: Package
+Title: Differentially Methylated Regions from mHap Data Using M-Score GLS
+Version: 0.1.0
+Authors@R:
+    person("Jiantao", "Shi", role = c("aut", "cre"),
+           email = "jtshi@cmpt.ac.cn")
+Description: Detects differentially methylated regions (DMRs) from
+    read-level methylation haplotype ('mHap') files. Every methylation
+    string character is aligned to an absolute CpG coordinate, candidate
+    regions are found by locally smoothing the between-group M-score
+    difference (following the 'dmrseq' candidate discovery procedure),
+    each candidate is tested with a two-stage Beta-Bernoulli generalized
+    least-squares model, and significance is calibrated against a pooled
+    group-label permutation null with Benjamini-Hochberg false discovery
+    rate control. Inputs are streamed in bounded batches so that
+    whole-genome data can be analysed with limited memory.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends:
+    R (>= 4.1.0)
+Imports:
+    data.table (>= 1.14.0),
+    GenomicRanges,
+    IRanges,
+    locfit,
+    matrixStats (>= 1.0.0),
+    parallel,
+    Rsamtools,
+    S4Vectors,
+    stats,
+    utils
+Suggests:
+    R.utils,
+    testthat (>= 3.1.7)
+biocViews: DNAMethylation, DifferentialMethylation, Sequencing,
+    Software
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
