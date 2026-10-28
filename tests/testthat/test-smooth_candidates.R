@@ -280,6 +280,27 @@ test_that("permutation smoothing fits finite rows and predicts all block coordin
   expect_equal(as.numeric(GenomicRanges::end(result)), 2000)
 })
 
+test_that("permutation loci beyond every fitted bandwidth stay missing", {
+  groups <- c(a1 = "a", a2 = "a", b1 = "b", b2 = "b")
+  values <- data.table::CJ(pos = c(1:5 * 100, 2000), sample = names(groups))
+  values[, `:=`(chr = "chr1", T = 10,
+               S = ifelse(sample %in% c("a1", "a2"), 8, 2))]
+  # Under permuted labels the locus at 2000 has no coverage in group b. With
+  # a sparse block (k = 1) its nearest fitted locus is 1,500 bp away, beyond
+  # bp_span, so no fitted locus lies inside its bandwidth.
+  values <- values[!(pos == 2000 & sample %in% c("b1", "b2"))]
+  for (smoother in c("direct", "locfit")) {
+    result <- MscoreDMR:::.run_smoothing_pipeline(
+      values, groups, c("a", "b"), 0.1, check_group_coverage = FALSE,
+      density_span = 500, smoother = smoother
+    )
+    expect_length(result, 1L)
+    expect_equal(as.numeric(GenomicRanges::start(result)), 100)
+    expect_equal(as.numeric(GenomicRanges::end(result)), 500)
+    expect_equal(S4Vectors::mcols(result)$n_loci, 5L)
+  }
+})
+
 test_that("locfit failures stop with genomic context rather than raw fallback", {
   groups <- c(a1 = "a", a2 = "a", b1 = "b", b2 = "b")
   values <- data.table::CJ(pos = seq_len(10) * 100, sample = names(groups))

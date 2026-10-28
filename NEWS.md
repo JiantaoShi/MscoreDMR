@@ -1,3 +1,16 @@
+# MscoreDMR 0.1.1
+
+## Bug fixes
+
+* Permutation passes no longer stop with "Prediction length mismatch or
+  non-finite predictions". Under permuted labels a CpG can lack coverage in
+  one permuted group; it is then predicted but not fitted, and in sparse
+  smoothing blocks (few CpGs per bandwidth) no fitted CpG may lie within its
+  bandwidth, so its smoothed value is missing. Such CpGs are now left missing
+  and skipped in segmentation, as in short blocks; fitted CpGs must still
+  receive finite predictions. Observed-label results are unchanged, because
+  every observed CpG passes the coverage screen and is fitted.
+
 # MscoreDMR 0.1.0
 
 * First packaged release: `dmr_mscore()`, `find_mscore_candidates()` and

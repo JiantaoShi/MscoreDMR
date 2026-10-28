@@ -530,7 +530,12 @@ find_mscore_candidates <- function(mhap_files, cpg_files, groups,
           )
           as.numeric(stats::predict(fit, newdata = block_positions))
         }
-        if (length(values) != length(rows) || any(!is.finite(values))) {
+        # A locus without a pooled effect (possible only under permuted
+        # labels) is predicted but not fitted. When no fitted locus lies
+        # within its bandwidth its prediction is missing, and segmentation
+        # skips it as it does such loci in short blocks. Fitted loci must
+        # always receive finite predictions.
+        if (length(values) != length(rows) || any(!is.finite(values[finite]))) {
           stop("Prediction length mismatch or non-finite predictions.")
         }
         values

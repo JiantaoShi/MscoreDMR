@@ -1,7 +1,7 @@
 Package: MscoreDMR
 Type: Package
 Title: Differentially Methylated Regions from mHap Data Using M-Score GLS
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
     person("Jiantao", "Shi", role = c("aut", "cre"),
            email = "jtshi@cmpt.ac.cn")
